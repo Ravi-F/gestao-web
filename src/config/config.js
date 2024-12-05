@@ -1,25 +1,26 @@
-import Express from "express";
+import express from "express";
+import session from "express-session";
+import passport from "../middleware/auth.js";
 import router from "../router/index.js";
 
-import session from "express-session";
-import passport from "passport";
-
-const express = Express();
+const app = express();
 const port = 3000;
 
-express.use(Express.urlencoded({ extended: true }));
-express.use("/public", Express.static("./assets"));
-express.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+app.use("/public", express.static("./assets"));
+app.set("view engine", "ejs");
 
-express.use(
+app.use(
   session({
     secret: "mys3cr3t",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
   })
 );
-express.use(passport.authenticate("session"));
 
-express.use("/", router);
+app.use(passport.initialize());
+app.use(passport.session());
 
-export { express, port };
+app.use("/", router);
+
+export { app, port }; // Aqui está a exportação

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #343a40;
+            text-align: center;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #6c63ff;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #218838);
+            border-color: #218838;
+            transition: background 0.3s, transform 0.2s ease;
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(45deg, #218838, #28a745);
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            width: 100%;
+            border-radius: 20px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .mt-4 {
+            margin-top: 30px !important;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #ffffff;
+        }
+    </style>
+    <title>Editar Receita</title>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Editar Receita</h1>
+        
+        <!-- Card de edição -->
+        <div class="card mt-4">
+            <form action="/receitas/update/<%= receita.id %>" method="POST">
+                <div class="form-group">
+                    <label for="descricao">Descrição</label>
+                    <input type="text" class="form-control" name="descricao" value="<%= receita.descricao %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="valor">Valor</label>
+                    <input type="number" class="form-control" name="valor" value="<%= receita.valor %>" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="data">Data</label>
+                    <input type="date" class="form-control" name="data" value="<%= new Date(receita.data).toISOString().split('T')[0] %>" required>
+                </div>
+                <button type="submit" class="btn btn-success">Atualizar Receita</button>
+                <a href="/receitas" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

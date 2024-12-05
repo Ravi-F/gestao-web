@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 
-import User from "../database/models/user.model.js";
+import User from "../database/model/user.model.js";
 import bcrypt from "bcrypt";
 
 class LoginController {

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: "Arial", sans-serif;
+      }
+      h1,
+      h2 {
+        font-weight: bold;
+        color: #343a40;
+      }
+      .container {
+        max-width: 900px;
+      }
+      .card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background: #ffffff;
+      }
+      .btn-primary,
+      .btn-secondary,
+      .btn-custom {
+        border-radius: 20px;
+        transition: transform 0.2s ease;
+      }
+      .btn-primary:hover,
+      .btn-secondary:hover,
+      .btn-custom:hover {
+        transform: scale(1.05);
+      }
+      .btn-custom {
+        background: linear-gradient(45deg, #6c63ff, #3a38d0);
+        color: #fff;
+      }
+      .btn-custom:hover {
+        background: linear-gradient(45deg, #3a38d0, #6c63ff);
+        color: #fff;
+      }
+      .table th,
+      .table td {
+        vertical-align: middle;
+        font-size: 14px;
+      }
+      .icon {
+        color: #6c63ff;
+        margin-right: 10px;
+      }
+      .section-title {
+        font-size: 18px;
+        color: #6c63ff;
+      }
+      #scrollToTop,
+      #scrollToBottom {
+        width: 50px;
+        height: 50px;
+        display: none; /* Esconde os botões inicialmente */
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        z-index: 1000;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s, opacity 0.3s;
+      }
+
+      #scrollToTop:hover,
+      #scrollToBottom:hover {
+        transform: scale(1.1);
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include('partials/navbar') %>
+
+    <div class="container mt-5">
+      <h1 class="text-center mb-4">Perfil do Usuário</h1>
+
+      <!-- Formulário para filtrar receitas por mês -->
+      <div class="card p-4 mb-4">
+        <h2 class="section-title">
+          <i class="fas fa-filter icon"></i>Filtrar Receitas
+        </h2>
+        <form action="/receitas/mes" method="get">
+          <div class="form-row">
+            <div class="col">
+              <input
+                type="number"
+                name="mes"
+                class="form-control"
+                placeholder="Mês (1-12)"
+                required
+                min="1"
+                max="12"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="number"
+                name="ano"
+                class="form-control"
+                placeholder="Ano (YYYY)"
+                required
+              />
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-primary w-100">
+                Filtrar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Formulário para filtrar despesas por mês -->
+      <div class="card p-4 mb-4">
+        <h2 class="section-title">
+          <i class="fas fa-filter icon"></i>Filtrar Despesas
+        </h2>
+        <form action="/despesas/mes" method="get">
+          <div class="form-row">
+            <div class="col">
+              <input
+                type="number"
+                name="mes"
+                class="form-control"
+                placeholder="Mês (1-12)"
+                required
+                min="1"
+                max="12"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="number"
+                name="ano"
+                class="form-control"
+                placeholder="Ano (YYYY)"
+                required
+              />
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-secondary w-100">
+                Filtrar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tabela de Receitas -->
+      <div class="card p-4 mb-4">
+        <h2 class="section-title"><i class="fas fa-coins icon"></i>Receitas</h2>
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% receitas.forEach(receita => { %>
+            <tr>
+              <td><%= receita.descricao %></td>
+              <td>R$ <%= receita.valor.toFixed(2) %></td>
+              <td><%= new Date(receita.data).toLocaleDateString('pt-BR') %></td>
+            </tr>
+            <% }) %> <% if (receitas.length === 0) { %>
+            <tr>
+              <td colspan="3" class="text-center">
+                Nenhuma receita cadastrada.
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tabela de Despesas -->
+      <div class="card p-4 mb-4">
+        <h2 class="section-title">
+          <i class="fas fa-wallet icon"></i>Despesas
+        </h2>
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Descrição</th>
+              <th>Valor</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% despesas.forEach(despesa => { %>
+            <tr>
+              <td><%= despesa.descricao %></td>
+              <td>R$ <%= despesa.valor.toFixed(2) %></td>
+              <td><%= new Date(despesa.data).toLocaleDateString('pt-BR') %></td>
+            </tr>
+            <% }) %> <% if (despesas.length === 0) { %>
+            <tr>
+              <td colspan="3" class="text-center">
+                Nenhuma despesa cadastrada.
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="/receitas" class="btn btn-custom mr-2"
+          ><i class="fas fa-edit"></i> Gerenciar Receitas</a
+        >
+        <a href="/despesas" class="btn btn-secondary"
+          ><i class="fas fa-edit"></i> Gerenciar Despesas</a
+        >
+      </div>
+    </div>
+
+    <!-- Botão para rolar para o final -->
+    <button
+      id="scrollToBottom"
+      class="btn btn-primary position-fixed rounded-circle"
+      style="bottom: 80px; right: 20px; display: none"
+    >
+      <i class="fas fa-arrow-down"></i>
+    </button>
+
+    <!-- Botão para rolar para o topo -->
+    <button
+      id="scrollToTop"
+      class="btn btn-secondary position-fixed rounded-circle"
+      style="bottom: 20px; right: 20px; display: none"
+    >
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const scrollToTop = document.getElementById("scrollToTop");
+        const scrollToBottom = document.getElementById("scrollToBottom");
+
+        // Mostra os botões conforme a posição de rolagem
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 300) {
+            scrollToTop.style.display = "block";
+          } else {
+            scrollToTop.style.display = "none";
+          }
+
+          if (
+            window.innerHeight + window.scrollY <
+            document.body.offsetHeight - 300
+          ) {
+            scrollToBottom.style.display = "block";
+          } else {
+            scrollToBottom.style.display = "none";
+          }
+        });
+
+        // Rolagem para o topo
+        scrollToTop.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        // Rolagem para o final
+        scrollToBottom.addEventListener("click", () => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+          });
+        });
+      });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+  <%- include('partials/footer') %>
+</html>
